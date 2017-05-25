@@ -13,4 +13,9 @@ public class Answer {
         text = s;
     }
 
+    @Override
+    public String toString(){
+        return text + " survey says " + num;
+    }
+
 }

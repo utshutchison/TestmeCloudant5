@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-
         client = ClientBuilder.account("ghutchis")
                 .username("ghutchis")
                 .password("changemenow")
@@ -51,20 +51,33 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             // Get a List of all the databases this Cloudant account
             db = client.database("feud",true);
-            Question q = new Question("Which Party?");
+         /*   Question q = new Question(5, "Which Party?");
             q.addAnswer(new Answer(30,"Liberal"));
             q.addAnswer(new Answer(20,"PC"));
             q.addAnswer(new Answer(10,"NDP"));
             db.save(q);
+*/
+            List<Question> allQuestions = new ArrayList<Question>();
 
-            Question q2 = db.find(Question.class,
-                    "c3e337cddb514dcfa2472ceda887fc63");
-            Log.d("HELLO",String.valueOf(q2.numAnswers()));
+            try {
+                allQuestions = db.getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(Question.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String out = "";
+            for (Question quest : allQuestions){
+                Log.d("Question", quest.getQuestion());
+                for (Answer ans : quest.getAnswers()){
+                    Log.d("ANSWER", ans.toString());
+                }
+            }
+
+           // Log.d("HELLO", String.valueOf(allQuestions.size()));
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Got Database Info", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Updated Database", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             });
