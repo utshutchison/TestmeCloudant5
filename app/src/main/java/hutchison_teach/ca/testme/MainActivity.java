@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        // Added a textView object
         tv = (TextView) findViewById(R.id.tvout);
         client = ClientBuilder.account("ghutchis")
                 .username("ghutchis")
