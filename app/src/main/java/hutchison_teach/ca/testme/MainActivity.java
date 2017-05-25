@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cloudant.client.api.ClientBuilder;
@@ -26,10 +27,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
 
+    TextView tv;
     private CloudantClient client;
     private Database db;
+    int total=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState
@@ -38,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        tv = (TextView) findViewById(R.id.tvout);
         client = ClientBuilder.account("ghutchis")
                 .username("ghutchis")
-                .password("XXXXXXX")
+                .password("XXXXXX")
                 .build();
 
         new DownloadWebpageTask().execute();
@@ -65,20 +70,23 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             String out = "";
+
             for (Question quest : allQuestions){
                 Log.d("Question", quest.getQuestion());
                 for (Answer ans : quest.getAnswers()){
-                    Log.d("ANSWER", ans.toString());
+                    total += ans.getNum();
                 }
             }
+
 
            // Log.d("HELLO", String.valueOf(allQuestions.size()));
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Updated Database", Toast.LENGTH_SHORT);
-                    toast.show();
+                   // Toast toast = Toast.makeText(getApplicationContext(), "Updated Database", Toast.LENGTH_SHORT);
+                   // toast.show();
+                    tv.setText("Survey total was :" + String.valueOf(total));
                 }
             });
             return "";

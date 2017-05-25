@@ -13,6 +13,10 @@ public class Answer {
         text = s;
     }
 
+    public int getNum(){
+        return num;
+
+    }
     @Override
     public String toString(){
         return text + " survey says " + num;
