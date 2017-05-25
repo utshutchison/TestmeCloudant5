@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         client = ClientBuilder.account("ghutchis")
                 .username("ghutchis")
-                .password("changemenow")
+                .password("XXXXXXX")
                 .build();
 
         new DownloadWebpageTask().execute();
